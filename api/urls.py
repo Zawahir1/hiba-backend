@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CustomTokenObtainPairView, TherapistListView, BlogCategoryListView, BlogsByCategoryView,BlogView, LatestBlogsView, LatestNewsListView, UserBookingsListCreateView, CustomTokenRefreshView, UserSignupView, CalculatorDetailView, CalculatorListView, UserLatestScoresView, SaveCalculatorScoreView
+from .views import CustomTokenObtainPairView, chatbot_response, TherapistListView, BlogCategoryListView, BlogsByCategoryView,BlogView, LatestBlogsView, LatestNewsListView, UserBookingsListCreateView, CustomTokenRefreshView, UserSignupView, CalculatorDetailView, CalculatorListView, UserLatestScoresView, SaveCalculatorScoreView
 from . import views
 
 urlpatterns = [
@@ -18,5 +18,7 @@ urlpatterns = [
     path("calculators/<str:name>/", CalculatorDetailView.as_view(), name="calculator-detail"),
     path("user/scores/", UserLatestScoresView.as_view(), name="user-latest-scores"),
     path("save-score/", SaveCalculatorScoreView.as_view(), name="save-calculator-score"),
+    path("chatbot/", chatbot_response, name="chatbot_response"),
+
         
 ]

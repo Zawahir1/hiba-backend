@@ -19,6 +19,60 @@ from django.db.models import OuterRef, Subquery
 
 
 
+
+from transformers import BlenderbotTokenizer, BlenderbotForConditionalGeneration
+from rest_framework.decorators import api_view
+from django.middleware.csrf import get_token
+import uuid
+import time
+from rest_framework.response import Response
+
+model_name = "facebook/blenderbot-400M-distill"
+tokenizer = BlenderbotTokenizer.from_pretrained(model_name)
+model = BlenderbotForConditionalGeneration.from_pretrained(model_name)
+session_data = {}
+
+# Remove inactive sessions (e.g., after 10 minutes)
+SESSION_TIMEOUT = 10 * 60  # 10 minutes in seconds
+
+def cleanup_sessions():
+    """Delete inactive sessions to free up memory."""
+    current_time = time.time()
+    inactive_sessions = [sid for sid, data in session_data.items() if (current_time - data["last_active"]) > SESSION_TIMEOUT]
+    
+    for sid in inactive_sessions:
+        del session_data[sid]  # Remove inactive session
+
+@api_view(['POST'])
+def chatbot_response(request):
+    cleanup_sessions()  # Run cleanup before processing request
+
+    session_id = request.data.get("session_id", str(uuid.uuid4()))
+    user_input = request.data.get("message", "")
+
+    if not user_input:
+        return Response({"error": "No message provided"}, status=400)
+
+    # Retrieve session history or create a new one
+    if session_id not in session_data:
+        session_data[session_id] = {"history": [], "last_active": time.time()}
+
+    session_data[session_id]["history"].append({"role": "user", "message": user_input})
+
+    # Generate chatbot response
+    inputs = tokenizer([user_input], return_tensors="pt")
+    reply_ids = model.generate(**inputs)
+    response_text = tokenizer.batch_decode(reply_ids, skip_special_tokens=True)[0]
+
+    session_data[session_id]["history"].append({"role": "bot", "message": response_text})
+    session_data[session_id]["last_active"] = time.time()  # Update last active time
+
+    return Response({
+        "session_id": session_id,
+        "response": response_text
+    })
+
+
 User = get_user_model()
 
 
