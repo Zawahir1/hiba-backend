@@ -151,10 +151,28 @@ class BlogsByCategoryView(ListAPIView):
     serializer_class = BlogSerializer
     pagination_class = BlogPagination
 
+    # def get_queryset(self):
+    #     category_name = self.kwargs['category_name']
+    #     print("category_name")
+    #     print(category_name)
+    #     category_id = BlogsCategories.objects.get(name=category_name).id
+    #     blogs = Blogs.objects.filter(category_id=category_id).order_by('-created_at')
+    #     return blogs
     def get_queryset(self):
-        category_name = self.kwargs['category_name']
-        category_id = BlogsCategories.objects.get(name=category_name).id
-        blogs = Blogs.objects.filter(category_id=category_id).order_by('-created_at')
+        category_name = self.kwargs.get('category_name', None)
+        print("Received category_name:", category_name)  # Debugging print
+
+        if category_name is None:
+            raise ValueError("Category name is None")  # This will help detect if it's missing
+
+        try:
+            category = BlogsCategories.objects.get(name__iexact=category_name.strip())
+            print("Found category:", category)  # Debugging print
+        except BlogsCategories.DoesNotExist:
+            print("Category not found in DB")  # Debugging print
+            raise  # Re-raise the exception to see the full error
+
+        blogs = Blogs.objects.filter(category_id=category.id).order_by('-created_at')
         return blogs
     
 class BlogView(ListAPIView):

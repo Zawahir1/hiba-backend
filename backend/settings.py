@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-rbg05u_g-kx&l-xr+!yg4hw593-3p!%-ls0r!3!sji+p=7#^ij
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -62,8 +62,9 @@ MIDDLEWARE = [
 
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    "http://localhost:5179",
+    "http://127.0.0.1:5179",
+    "https://velience.vercel.app/"
 ]
 CORS_ALLOW_METHODS = [
     "GET",
@@ -84,7 +85,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_CREDENTIALS = True  # Allow sending cookies
 
 # CSRF settings
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["https://velience.vercel.app/", "http://127.0.0.1:5179"]
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
