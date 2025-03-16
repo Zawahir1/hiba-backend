@@ -62,9 +62,9 @@ MIDDLEWARE = [
 
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5179",
-    "http://127.0.0.1:5179",
-    "https://velience.vercel.app/"
+    "http://localhost:5181",
+    "http://127.0.0.1:5181",
+    "https://velience.vercel.app"
 ]
 CORS_ALLOW_METHODS = [
     "GET",
@@ -85,7 +85,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_CREDENTIALS = True  # Allow sending cookies
 
 # CSRF settings
-CSRF_TRUSTED_ORIGINS = ["https://velience.vercel.app/", "http://127.0.0.1:5179"]
+CSRF_TRUSTED_ORIGINS = ["https://velience.vercel.app", "http://127.0.0.1:5181"]
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"

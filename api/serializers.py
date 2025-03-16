@@ -117,7 +117,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bookings
-        fields = ['id', 'user', 'therapist', 'therapist_id', 'date', 'time', 'created_at', 'status', "payment_method", "paid"]
+        fields = ['id', 'user', 'therapist', 'therapist_id', 'date', 'time', 'created_at', 'status', "payment_method", "paid", "receipt"]
         extra_kwargs = {
             'user': {'read_only': True},  # User should be auto-set from the request
             'created_at': {'read_only': True},

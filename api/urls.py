@@ -18,7 +18,7 @@ urlpatterns = [
     path("calculators/<str:name>/", CalculatorDetailView.as_view(), name="calculator-detail"),
     path("user/scores/", UserLatestScoresView.as_view(), name="user-latest-scores"),
     path("save-score/", SaveCalculatorScoreView.as_view(), name="save-calculator-score"),
-    path("chatbot/", chatbot_response, name="chatbot_response"),
+    # path("chatbot/", chatbot_response, name="chatbot_response"),
 
         
 ]
